@@ -118,6 +118,7 @@ input[type="submit"],
     padding: 0px;
     display: block;
     font-weight: bold;
+    text-transform: capitalize;
   }
 
   input:not([type="submit"]),
@@ -143,6 +144,12 @@ input[type="submit"],
       &:focus{
         box-shadow: 0 0 0 0.25rem rgba(25 ,135 ,84 ,0.25);
         }
+    }
+    ::placeholder {
+      text-transform: capitalize;
+    }
+    &::placeholder {
+      text-transform: capitalize;
     }
   }
 

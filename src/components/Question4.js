@@ -22,6 +22,7 @@ const Question4 = () => {
   }, [data]);
 
   const handleInput = (c, e) => {
+    console.log(c, e);
     setData({
       ...data,
       [c]: e.target.value,
@@ -48,7 +49,6 @@ const Question4 = () => {
     let validityErrors = { ...formErrors };
 
     // validating field
-
     const isEmailValid = data.email.match(
       /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i
     );
@@ -73,99 +73,68 @@ const Question4 = () => {
       data.password &&
       data.confirmPassword
     );
-
-    var exists = Object.values(validityErrors).includes(false);
+    const exists = Object.values(validityErrors).includes(false);
 
     setIsformValid(!exists && fieldsComplete);
   };
   const { name, email, password, confirmPassword } = data;
+
+  const dL = [
+    { name: "name", data: name, message: " Please enter your name." },
+    {
+      name: "email",
+      data: email,
+      message: " Please enter a valid email address.",
+    },
+    { name: "password", data: password, message: "Password is too short." },
+    {
+      name: "confirmPassword",
+      data: confirmPassword,
+      type: "password",
+      message: "Passwords do not match.",
+    },
+  ];
+  // convert camelCase to capital letters
+  const capitalCase = (e) => {
+    return (
+      e
+        .replace(/([A-Z]{1,})/g, " $1")
+        .charAt(0)
+        .toUpperCase() + e.replace(/([A-Z]{1,})/g, " $1").slice(1)
+    );
+  };
   return (
     <div>
-      <div>
-        <ul className="yobetit_form">
-          <li>
+      <ul className="yobetit_form">
+        {dL.map((x, i) => (
+          <li key={i}>
             <label>
-              Name <span className="field_required">*</span>
+              {capitalCase(x.name)}
+              <span className="field_required">*</span>
             </label>
             <input
-              type="text"
-              name="name"
-              placeholder="Name"
-              value={name}
-              onChange={(e) => handleInput("name", e)}
-              className={`${name && errorClass("name")}`}
+              type={`${x.type ? x.type : x.name}`}
+              name={`${x.name}`}
+              placeholder={capitalCase(x.name)}
+              value={x.data}
+              onChange={(e) => handleInput(x.name, e)}
+              className={`${x.data && errorClass(x.name)}`}
             />
-            {name && errorClass("name") === "has-error" && (
-              <small className="invalid-feedback">
-                Please enter your name.
-              </small>
+            {x.data && errorClass(x.name) === "has-error" && (
+              <small className="invalid-feedback">{x.message}</small>
             )}
           </li>
-          <li>
-            <label>
-              Email <span className="field_required">*</span>
-            </label>
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => handleInput("email", e)}
-              className={`${email && errorClass("email")}`}
-            />
-            {email && errorClass("email") === "has-error" && (
-              <small className="invalid-feedback">
-                Please enter a valid email address.
-              </small>
-            )}
-          </li>
-          <li>
-            <label>
-              Password <span className="field_required">*</span>
-            </label>
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => handleInput("password", e)}
-              className={`${password && errorClass("password")}`}
-            />
-            {password && errorClass("password") === "has-error" && (
-              <small className="invalid-feedback">Password is too short.</small>
-            )}{" "}
-          </li>
-          <li>
-            <label>
-              Confirm Password <span className="field_required">*</span>
-            </label>
-            <input
-              type="password"
-              name="confirmPassword"
-              placeholder="Confirm Password"
-              value={confirmPassword}
-              onChange={(e) => handleInput("confirmPassword", e)}
-              className={`${confirmPassword && errorClass("confirmPassword")}`}
-            />
-            {confirmPassword &&
-              errorClass("confirmPassword") === "has-error" && (
-                <small className="invalid-feedback">
-                  Passwords do not match.
-                </small>
-              )}
-          </li>
-
-          <li>
-            <button
-              className="submit btn"
-              disabled={!isFormValid}
-              onClick={(e) => handleSubmit(e)}
-            >
-              Submit {isFormValid}
-            </button>
-          </li>
-        </ul>
-      </div>
+        ))}
+        <li>
+          <button
+            className="submit btn"
+            disabled={!isFormValid}
+            onClick={(e) => handleSubmit(e)}
+          >
+            Submit {isFormValid}
+          </button>
+        </li>
+      </ul>
     </div>
   );
 };
