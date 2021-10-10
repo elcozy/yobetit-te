@@ -6,7 +6,6 @@ const Question1 = () => {
   const [loading, setLoading] = useState(false);
   const [anyError, setAnyError] = useState(null);
   const [data, setData] = useState(null);
-  const [notFound, setNotFound] = useState(null);
   const [name, setName] = useState("");
 
   // API link given "https://restcountries.eu" is depreciated but "https://restcountries.com" works instead.
@@ -19,8 +18,9 @@ const Question1 = () => {
       .then((res) => res.json())
       .then(
         (results) => {
-          setData(Array.isArray(results) === true ? results[0] : null);
-          setNotFound(Array.isArray(results) === true ? false : true);
+          setAnyError(null);
+          Array.isArray(results) ? setData(results[0]) : setAnyError(results);
+
           setLoading(false);
         },
         (error) => {
@@ -32,6 +32,7 @@ const Question1 = () => {
 
   return (
     <>
+      <small>Input only one countries name</small>
       <div className="example">
         <input
           className="search"
@@ -47,21 +48,21 @@ const Question1 = () => {
         </button>
       </div>
       {loading && <Loader />}
-      {anyError && (
+      {anyError ? (
         <div>
-          Sorry {`:(`} {anyError.message}
+          Sorry {`:(`}, Country {anyError.message}
         </div>
-      )}
-      {notFound && <div>Sorry {`:(`} Country not Found</div>}
-      {data && (
-        <div>
-          <div className="card_container">
-            <div className="country_card">
-              <img height="32" src={data.flag} alt={`${data.name}'s flag'`} />
-              <h5>{data.name}</h5>
+      ) : (
+        data && (
+          <div>
+            <div className="card_container">
+              <div className="country_card">
+                <img height="32" src={data.flag} alt={`${data.name}'s flag'`} />
+                <h5>{data.name}</h5>
+              </div>
             </div>
           </div>
-        </div>
+        )
       )}
     </>
   );

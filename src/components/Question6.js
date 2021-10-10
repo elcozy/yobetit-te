@@ -79,6 +79,9 @@ const Question6 = () => {
   ) : (
     <div>
       <h3>
+        Starting Coins: <b>20</b>
+      </h3>
+      <h3>
         Available Coins: <b>{coins}</b>
       </h3>
       <button className="btn" onClick={() => onSpin()}>

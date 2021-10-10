@@ -8,16 +8,24 @@ const Question3 = () => {
   const [data, setData] = useState([]);
   const [name, setName] = useState("");
 
+  // Getting data from the API on load
   useEffect(() => findCountry(), []);
 
   const findCountry = (name) => {
+    setAnyError(null);
+    setData([]);
     setLoading(true);
     const url = !!name ? `name/${name.trim()}` : "all";
+
     fetch(`${baseURL}${url}`)
       .then((res) => res.json())
       .then(
         (results) => {
-          setData(results);
+          if (Array.isArray(results)) {
+            setData(results);
+          } else {
+            setAnyError(results);
+          }
           setLoading(false);
         },
         (error) => {
@@ -26,18 +34,16 @@ const Question3 = () => {
         }
       );
   };
-  // findCountry();
 
-  return anyError ? (
-    <div>Error occured with message {anyError.message}</div>
-  ) : loading ? (
-    <Loader />
-  ) : (
-    <div className="question_3--wrapper">
+  return (
+    <>
+      <small>Input only one countries name</small>
+
       <div className="example">
         <input
           type="text"
           className="search"
+          disabled={loading}
           placeholder="SEARCH FOR A COUNTRY"
           onChange={(a) => setName(a.target.value)}
           onKeyPress={(e) => e.key === "Enter" && findCountry(name)}
@@ -48,16 +54,30 @@ const Question3 = () => {
           SEARCH
         </button>
       </div>
-      <div className="card_container">
-        {data &&
-          data.map((item, i) => (
-            <div className="country_card" key={i}>
-              <img height="32" src={item.flag} alt={`${item.name}'s flag'`} />
-              <h5>{item.name}</h5>
+      {loading && <Loader />}
+
+      {anyError ? (
+        <div>Error occured with message {anyError.message}</div>
+      ) : (
+        <>
+          <div className="question_3--wrapper">
+            <div className="card_container">
+              {data &&
+                data.map((item, i) => (
+                  <div className="country_card" key={i}>
+                    <img
+                      height="32"
+                      src={item.flag}
+                      alt={`${item.name}'s flag'`}
+                    />
+                    <h5>{item.name}</h5>
+                  </div>
+                ))}
             </div>
-          ))}
-      </div>
-    </div>
+          </div>
+        </>
+      )}
+    </>
   );
 };
 

@@ -45,8 +45,6 @@ const Question2 = () => {
       return searchCountries.some((c) => value.name.toLowerCase().includes(c));
     });
     setFilteredData(filtered);
-    console.log(data);
-
     setTimeout(() => setLoading(false), 500);
   };
 

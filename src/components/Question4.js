@@ -10,14 +10,15 @@ const Question4 = () => {
   });
   const [isFormValid, setIsformValid] = useState(false);
   const [formErrors, setFormError] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
+    name: false,
+    email: false,
+    password: false,
+    confirmPassword: false,
   });
 
   useEffect(() => {
     validateField();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   const handleInput = (c, e) => {
@@ -28,46 +29,59 @@ const Question4 = () => {
   };
 
   const handleSubmit = (c, e) => {
-    console.log("submitted");
+    console.log("Submitted");
+    setData({
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    });
   };
 
   const errorClass = (name) => {
+    if (formErrors[name]) return "valid";
     if (!formErrors[name]) return "has-error";
-    console.log("NO errrorrrr", name);
     return "";
   };
 
   const validateField = () => {
-    let validityErrors = formErrors;
+    let validityErrors = { ...formErrors };
+
+    // validating field
 
     const isEmailValid = data.email.match(
       /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i
     );
-    validityErrors.email = isEmailValid ? undefined : " is invalid";
+    validityErrors.email = data.email && (!!isEmailValid ? "valid" : false);
 
     validityErrors.password =
-      data.password.length >= 6 ? undefined : " is too short";
+      data.password && (data.password.length >= 6 ? "valid" : false);
 
     validityErrors.confirmPassword =
-      !validityErrors.password && data.password === data.confirmPassword
-        ? undefined
-        : " do not match";
+      data.confirmPassword &&
+      (validityErrors.password && data.password === data.confirmPassword
+        ? "valid"
+        : false);
 
-    validityErrors.name = !!data.name ? undefined : " cannot not be empty";
-    console.log(">>>>", validityErrors);
-
-    console.log(
-      "<<<<<<<",
-      !Object.values(validityErrors).filter((x) => !!x).length
-    );
+    validityErrors.name = data.name && (!!data.name ? "valid" : false);
 
     setFormError(validityErrors);
-    setIsformValid(!Object.values(validityErrors).filter((x) => !!x).length);
-  };
 
+    const fieldsComplete = !!(
+      data.name &&
+      data.email &&
+      data.password &&
+      data.confirmPassword
+    );
+
+    var exists = Object.values(validityErrors).includes(false);
+
+    setIsformValid(!exists && fieldsComplete);
+  };
+  const { name, email, password, confirmPassword } = data;
   return (
     <div>
-      <form onSubmit={(e) => handleSubmit(e)} method="post">
+      <div>
         <ul className="yobetit_form">
           <li>
             <label>
@@ -77,10 +91,15 @@ const Question4 = () => {
               type="text"
               name="name"
               placeholder="Name"
-              value={data.name}
+              value={name}
               onChange={(e) => handleInput("name", e)}
-              className={`${errorClass("name")}`}
+              className={`${name && errorClass("name")}`}
             />
+            {name && errorClass("name") === "has-error" && (
+              <small className="invalid-feedback">
+                Please enter your name.
+              </small>
+            )}
           </li>
           <li>
             <label>
@@ -90,10 +109,15 @@ const Question4 = () => {
               type="email"
               name="email"
               placeholder="Email"
-              value={data.email}
+              value={email}
               onChange={(e) => handleInput("email", e)}
-              className={`${errorClass("email")}`}
+              className={`${email && errorClass("email")}`}
             />
+            {email && errorClass("email") === "has-error" && (
+              <small className="invalid-feedback">
+                Please enter a valid email address.
+              </small>
+            )}
           </li>
           <li>
             <label>
@@ -103,10 +127,13 @@ const Question4 = () => {
               type="password"
               name="password"
               placeholder="Password"
-              value={data.password}
+              value={password}
               onChange={(e) => handleInput("password", e)}
-              className={`${errorClass("password")}`}
+              className={`${password && errorClass("password")}`}
             />
+            {password && errorClass("password") === "has-error" && (
+              <small className="invalid-feedback">Password is too short.</small>
+            )}{" "}
           </li>
           <li>
             <label>
@@ -116,15 +143,21 @@ const Question4 = () => {
               type="password"
               name="confirmPassword"
               placeholder="Confirm Password"
-              value={data.confirmPassword}
+              value={confirmPassword}
               onChange={(e) => handleInput("confirmPassword", e)}
-              className={`${errorClass("confirmPassword")}`}
+              className={`${confirmPassword && errorClass("confirmPassword")}`}
             />
+            {confirmPassword &&
+              errorClass("confirmPassword") === "has-error" && (
+                <small className="invalid-feedback">
+                  Passwords do not match.
+                </small>
+              )}
           </li>
 
           <li>
             <button
-              className="submit"
+              className="submit btn"
               disabled={!isFormValid}
               onClick={(e) => handleSubmit(e)}
             >
@@ -132,26 +165,9 @@ const Question4 = () => {
             </button>
           </li>
         </ul>
-      </form>
-      {/* <FormErrors formErrors={data.formErrors} /> */}
+      </div>
     </div>
   );
 };
 
 export default Question4;
-
-// const FormErrors = ({ formErrors }) => (
-//   <div className="formErrors">
-//     {Object.keys(formErrors).map((fieldName, i) => {
-//       if (formErrors[fieldName].length > 0) {
-//         return (
-//           <p key={i}>
-//             {fieldName} {formErrors[fieldName]}
-//           </p>
-//         );
-//       } else {
-//         return "";
-//       }
-//     })}
-// </div>
-// );

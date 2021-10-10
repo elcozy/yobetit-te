@@ -16,6 +16,9 @@ const Question5 = () => {
     });
   };
 
+  const validatateEmail = !!data.email.match(
+    /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i
+  );
   return (
     <div>
       <div>
@@ -30,7 +33,16 @@ const Question5 = () => {
               placeholder="Email"
               value={data.email}
               onChange={(e) => handleInput("email", e)}
+              className={`${
+                data.email &&
+                (data.email && !validatateEmail ? "has-error" : "valid")
+              }`}
             />
+            {data.email && !validatateEmail && (
+              <small className="invalid-feedback">
+                Email address not valid.
+              </small>
+            )}
           </li>
           <li>
             <label>
@@ -42,17 +54,17 @@ const Question5 = () => {
               placeholder="Password"
               value={data.password}
               onChange={(e) => handleInput("password", e)}
+              className={`${
+                data.password &&
+                (data.password.length < 2 ? "has-error" : "valid")
+              }`}
             />
           </li>
 
           <li>
             <button
-              disabled={
-                !(
-                  data.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) &&
-                  data.password
-                )
-              }
+              className="submit"
+              disabled={!(validatateEmail && data.password)}
             >
               Submit
             </button>
