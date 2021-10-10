@@ -22,7 +22,6 @@ const Question4 = () => {
   }, [data]);
 
   const handleInput = (c, e) => {
-    console.log(c, e);
     setData({
       ...data,
       [c]: e.target.value,
