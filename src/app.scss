@@ -1,23 +1,19 @@
-
-html {
-  box-sizing: border-box;
-}
+@import url("https://fonts.googleapis.com/css2?family=Overpass:wght@300;400;600&family=Zilla+Slab:wght@300;400;500;600;700&display=swap");
 *,
 *:before,
 *:after {
   box-sizing: inherit;
 }
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  margin-top: 3.5rem;
-
+html {
+  box-sizing: border-box;
+  body {
+    margin: 0;
+    font-family: "Overpass", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin-top: 3.5rem;
+  }
 }
-
 .app_container {
   width: 100%;
   padding-right: 0.75rem;
@@ -66,18 +62,15 @@ body {
     img {
       box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
     }
-    h5{
+    h5 {
       margin-bottom: 0;
     }
   }
 }
 .search_container {
   margin: 10px;
-
   .country_input {
     box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
     border: 1px solid #bebebe;
     width: 100%;
     padding: 7px;
@@ -89,7 +82,6 @@ body {
     }
   }
 }
-input[type="submit"],
 .btn {
   padding: 8px 15px 8px 15px;
   border: none;
@@ -97,7 +89,7 @@ input[type="submit"],
   font-weight: 600;
   background: #d37d4b;
   cursor: pointer;
-  &:disabled{
+  &:disabled {
     opacity: 0.56;
   }
   &:hover:enabled {
@@ -121,29 +113,28 @@ input[type="submit"],
     text-transform: capitalize;
   }
 
-  input:not([type="submit"]),
-  textarea,
-  select {
+  input {
     border: 1px solid #bebebe;
     width: 100%;
     margin: 0px;
     margin-bottom: 10px;
     outline: none;
+    padding: 10px;
     &:focus {
       border: 1px solid #198754;
-      box-shadow: 0 0 0 0.15rem rgba(25 ,135 ,84 ,0.25);
+      box-shadow: 0 0 0 0.15rem rgba(25, 135, 84, 0.25);
     }
     &.has-error {
-      &:focus{
-      box-shadow: 0 0 0 0.25rem rgba(220 ,53,69 ,0.25);
+      &:focus {
+        box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
       }
       border-color: red;
     }
     &.valid {
       border: 1px solid #198754;
-      &:focus{
-        box-shadow: 0 0 0 0.25rem rgba(25 ,135 ,84 ,0.25);
-        }
+      &:focus {
+        box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25);
+      }
     }
     ::placeholder {
       text-transform: capitalize;
@@ -151,33 +142,26 @@ input[type="submit"],
     &::placeholder {
       text-transform: capitalize;
     }
+
   }
-
-
 
   .field_required {
     color: red;
   }
+  .invalid-feedback {
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 0.875em;
+    color: #dc3545;
+  }
 }
 
-div.example {
+div.search_container {
   display: flex;
   width: inherit;
   justify-content: space-between;
   margin: 10px;
-}
-// div.example
-// input[type="text"]
-input {
-  padding: 10px;
-  border: 1px solid #bebebe;
-  &.search {
-    width: 77%;
-  }
-  // background: #f1f1f1;
-}
-
-div.example button {
+ button {
   float: left;
   width: 22%;
   padding: 10px;
@@ -186,15 +170,20 @@ div.example button {
   border-left: none;
   cursor: pointer;
   background: #d37d4b;
-  &:hover:enabled {
-    background: #e37a3d;
-  }
-  &:active:enabled {
+  &:hover:enabled , &:active:enabled{
     background: #e37a3d;
   }
 }
+input{
+  padding: 10px;
+  border: 1px solid #bebebe;
+  &.search {
+    width: 77%;
+  }
+}
+}
 
-.Tabs {
+.tabs {
   height: auto;
   min-height: 500px;
   padding: 1.5rem 1rem;
@@ -202,10 +191,8 @@ div.example button {
   border-radius: 5px;
   border: 2px dashed #e6e6e6;
   box-shadow: inset 0px 0px 1.625rem rgba(0, 0, 0, 0.05);
-  // padding: 2rem 0;
   @media (max-width: 769px) {
   }
-
   /* Tab Navigation */
   ul.nav {
     margin: 0;
@@ -251,22 +238,17 @@ div.example button {
     }
   }
 }
-
-
-
-
-.pair_container{
-  .pair{
+.pair_container {
+  .pair {
     font-weight: bold;
     text-transform: capitalize;
-&:not(:last-child):after{
-  content: ', ';
-}
+    &:not(:last-child):after {
+      content: ", ";
+    }
   }
 }
-.invalid-feedback{
-  width: 100%;
-  margin-top: .25rem;
-  font-size: .875em;
-  color: #dc3545;
+.tab_title {
+  color: #1d1d1d;
+  font-family: "Zilla Slab", "Georgia", serif;
+  font-weight: 700;
 }

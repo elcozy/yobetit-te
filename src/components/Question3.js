@@ -29,6 +29,7 @@ const Question3 = () => {
           setLoading(false);
         },
         (error) => {
+          console.log(error);
           setAnyError(error);
           setLoading(false);
         }
@@ -39,7 +40,7 @@ const Question3 = () => {
     <>
       <small>Input only one countries name</small>
 
-      <div className="example">
+      <div className="search_container">
         <input
           type="text"
           className="search"

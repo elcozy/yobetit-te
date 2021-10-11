@@ -2,17 +2,17 @@ import React, { useEffect, useState } from "react";
 import { baseURL } from "./data";
 import Loader from "./Loader";
 
+
+
 const Question2 = () => {
   const [loading, setLoading] = useState(false);
   const [anyError, setAnyError] = useState(null);
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-
   const [countryNames, setCountryNames] = useState("");
 
-  useEffect(() => {
-    findCountry();
-  }, []);
+  // Getting data from the API on load
+  useEffect(() => findCountry(), []);
 
   const findCountry = (name) => {
     const url = !!name ? `name/${name.trim()}` : "all";
@@ -23,8 +23,7 @@ const Question2 = () => {
           setData(results);
         },
         (error) => {
-          console.log(true, "err");
-
+          console.log(error);
           setAnyError(error);
           setLoading(false);
         }
@@ -41,18 +40,18 @@ const Question2 = () => {
       .map((c) => c.trim());
 
     const filtered = data.filter((value) => {
-      // console.log(value.name, value.name.includes("Korea"));
+      setLoading(false);
       return searchCountries.some((c) => value.name.toLowerCase().includes(c));
     });
     setFilteredData(filtered);
-    setTimeout(() => setLoading(false), 500);
+    // setTimeout(() => setLoading(false), 2000);
   };
 
   return (
     <>
       <div className="question_2--wrapper">
         <small>Seperate countries by commas. Eg: Malta,Sweden,Hungary</small>
-        <div className="example">
+        <div className="search_container">
           <input
             type="text"
             className="search"

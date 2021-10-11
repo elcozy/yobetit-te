@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
+import Loader from "./Loader";
 
 const Question4 = () => {
-  // const [haveSubmitted, setHaveSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState({
     name: "",
     email: "",
@@ -28,14 +29,19 @@ const Question4 = () => {
     });
   };
 
-  const handleSubmit = (c, e) => {
-    console.log("Submitted");
-    setData({
-      name: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-    });
+  const handleSubmit = () => {
+    setLoading(true);
+
+    setTimeout(function () {
+      setLoading(false);
+      alert("Signup Successful");
+      setData({
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      });
+    }, 2000); //wait 2 seconds
   };
 
   const errorClass = (name) => {
@@ -128,12 +134,13 @@ const Question4 = () => {
           <button
             className="submit btn"
             disabled={!isFormValid}
-            onClick={(e) => handleSubmit(e)}
+            onClick={handleSubmit}
           >
             Submit {isFormValid}
           </button>
         </li>
       </ul>
+      {loading && <Loader fullScreen />}
     </div>
   );
 };

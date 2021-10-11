@@ -33,7 +33,7 @@ const Question1 = () => {
   return (
     <>
       <small>Input only one countries name</small>
-      <div className="example">
+      <div className="search_container">
         <input
           className="search"
           type="text"

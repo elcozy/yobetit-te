@@ -39,33 +39,42 @@ const Question6 = () => {
     ],
   };
 
+  // Get random value
+  const randomize = () => Math.floor(Math.random() * REEL_LENGTH);
+
   const onSpin = () => {
     setCoins(coins - 1);
-    const spinOne = reels["one"][Math.floor(Math.random() * REEL_LENGTH)];
-    const spinTwo = reels["one"][Math.floor(Math.random() * REEL_LENGTH)];
-    const spinThree = reels["one"][Math.floor(Math.random() * REEL_LENGTH)];
+
+    // Pick random fruit from reel
+    const spinOne = reels["one"][randomize()];
+    const spinTwo = reels["two"][randomize()];
+    const spinThree = reels["three"][randomize()];
+
     const spin = [spinOne, spinTwo, spinThree];
     setData(spin);
+
     const spinCount = spin.reduce((prev, curr) => {
       prev[curr] = ++prev[curr] || 1;
       return prev;
     }, {});
-    calcResult(spinCount);
+
+    // get result based on the spin result and order
+    calcResult(spinCount, spin[2]);
   };
 
-  const calcResult = ({ cherry, apple, banana, lemon }) => {
+  const calcResult = ({ cherry, apple, banana, lemon }, lastPick) => {
     let win = 0;
     if (cherry === 3) {
       win = 50;
-    } else if (cherry === 2) {
+    } else if (cherry === 2 && lastPick !== "cherry") {
       win = 40;
     } else if (apple === 3) {
       win = 20;
-    } else if (apple === 2) {
+    } else if (apple === 2 && lastPick !== "apple") {
       win = 10;
     } else if (banana === 3) {
       win = 15;
-    } else if (banana === 2) {
+    } else if (banana === 2 && lastPick !== "banana") {
       win = 5;
     } else if (lemon === 3) {
       win = 3;
@@ -79,12 +88,10 @@ const Question6 = () => {
   ) : (
     <div>
       <h3>
-        Starting Coins: <b>20</b>
-      </h3>
-      <h3>
         Available Coins: <b>{coins}</b>
       </h3>
-      <button className="btn" onClick={() => onSpin()}>
+      {coins < 1 && <small>No more coins availiable </small>}
+      <button className="btn" onClick={() => onSpin()} disabled={coins < 1}>
         SPIN
       </button>
 

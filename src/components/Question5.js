@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import Loader from "./Loader";
 
 const Question5 = () => {
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState({
     name: "",
     email: "",
@@ -13,6 +15,19 @@ const Question5 = () => {
     setData({
       ...data,
       [c]: e.target.value,
+    });
+  };
+
+  const handleSubmit = () => {
+    setLoading(true);
+    setTimeout(function () {
+      setLoading(false);
+    }, 2000); //wait 2 seconds
+    setData({
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
     });
   };
 
@@ -63,13 +78,15 @@ const Question5 = () => {
 
           <li>
             <button
-              className="submit"
+              className="submit btn"
+              onClick={handleSubmit}
               disabled={!(validatateEmail && data.password)}
             >
               Submit
             </button>
           </li>
         </ul>
+        {loading && <Loader />}
       </div>
     </div>
   );
